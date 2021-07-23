@@ -8,7 +8,7 @@
         <material-input :count="index + 1" />
       </q-card-section>
       <q-card-section class="row">
-        <q-btn color="primary" label="Confirm" />
+        <q-btn color="primary" label="Confirm" to="/simulation"/>
         <q-space />
         <q-btn color="primary" icon="add" @click="onClickAdd" />
         <q-btn color="negative" icon="remove" @click="onClickRemove" />

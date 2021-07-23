@@ -8,7 +8,10 @@
                 <q-select outlined dense label="Material" :options="options" v-model="select" />
             </q-card-section>
             <q-card-section>
-                <q-btn color="primary">Start Simulation</q-btn>
+                <q-btn color="primary" to="/simulation/start">Start Simulation</q-btn>
+            </q-card-section>
+            <q-card-section>
+                <q-btn color="primary" to="/">HOME</q-btn>
             </q-card-section>
         </q-card>
     </q-page>

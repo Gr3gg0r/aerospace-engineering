@@ -36,7 +36,7 @@
         </q-card-section>
 
         <q-card-section class="q-pt-none">
-          The number of seconds it took is , 0.23 seconds
+          The number of seconds it took is , {{ count / 100 }} seconds
         </q-card-section>
 
         <q-card-actions align="right" class="bg-white text-teal">
@@ -70,17 +70,22 @@ export default defineComponent({
       count: 0,
       startJ: 20,
       startI: 16,
+      controller :true,
     };
   },
   watch: {
-    // data: {
-    //   handler(val, oldVal) {
-    //   },
-    //   deep: true,
-    // },
+    data: {
+      handler(val, oldVal) {
+        console.log(val[0][0]);
+        if(val[0][0]==3159) {
+          this.controller = false;
+        }
+      },
+      deep: true,
+    },
     count: {
       handler(val) {
-        setTimeout(() => this.selfAware(), 1000);
+        setTimeout(() => this.selfAware(), 500);
       },
     },
     startI: {
@@ -111,11 +116,15 @@ export default defineComponent({
             var current = this.data[i][j];
             // if(this.data[i][j] == 3159) console.log('here');
             if (i > 0) this.calcValue(i - 1, j, current);
-            //if (j > 0) this.calcValue(i, j - 1, current);
+            if (j > 0) this.calcValue(i, j - 1, current);
           }
         }
       }
-      // if (i > 0 || j > 0) this.count += 1;
+      if (this.controller) {
+        this.count += 1;
+      } else {
+        this.popup = true;
+      }
     },
     calcValue(i, j, val) {
       if (this.data[i][j] == 3159) {
@@ -127,24 +136,47 @@ export default defineComponent({
           this.data[i][j] = 3159;
         }
       }
-      console.log("execute");
     },
     formula(i, j, val) {
       var time = this.count / 100;
       var times = time / 10;
       var k = this.object.thermal * -1;
-      var q = k * (this.data[i][j] - val);
       var f = this.object.density;
       const cp = 0.9;
+      var temperature = parseInt(this.data[i][j]);
 
-      var calc = (time * q) / (cp * f * times) + this.data[i][j];
-      var result = calc.toFixed(2);
-      console.log(time);
-      console.log(q);
-      console.log(cp);
-      console.log(f);
-      console.log(times);
-      console.log(calc);
+      if (i > 0 && j > 0) {
+        var temperatureL = parseInt(this.data[i][j - 1]);
+        var temperatureU = parseInt(this.data[i - 1][j]);
+      }
+
+      var q = 0;
+      var q1 = 0;
+      var q2 = 0;
+      if (temperature > 300 && i > 0 && j > 0) {
+        q1 = k * (this.data[i][j] - val);
+        if (temperature !== this.data[i - 1][j] && i > 0 && j > 0) {
+          q2 = k * (temperatureU - temperature);
+        } else {
+          console.log('left')
+          q2 = k * (temperatureL - temperature);
+        }
+        q = q1 - q2;
+        q = q.toFixed(2);
+      } else {
+        q = k * (temperature - val);
+        q = q.toFixed(2);
+      }
+
+      var calc = (time * q) / (cp * f * times) + temperature;
+      try {
+        var result = calc.toFixed(2);
+      } catch (e) {
+        // console.log(time, q, cp, f, times, this.data[i][j]);
+        // console.log(calc);
+      }
+      // console.log(result);
+
       return result;
     },
   },
@@ -153,7 +185,7 @@ export default defineComponent({
 
 <style scoped>
 .box {
-  width: 24px;
+  width: 26px;
 }
 .text-small {
   font-size: 7px;

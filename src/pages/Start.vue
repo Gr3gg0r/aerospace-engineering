@@ -57,9 +57,9 @@ export default {
       displays: [
         {
           material: "Aluminium",
-          meltingPoint: 300,
-          thermal: 12,
-          density: 1212,
+          meltingPoint: 1515,
+          thermal: 45,
+          density: 7150,
         },
       ],
     };

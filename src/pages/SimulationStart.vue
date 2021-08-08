@@ -73,28 +73,24 @@ export default defineComponent({
     };
   },
   watch: {
-    data: {
-      handler(val, oldVal) {
-        console.log("data changes");
-      },
-      deep: true,
-    },
+    // data: {
+    //   handler(val, oldVal) {
+    //   },
+    //   deep: true,
+    // },
     count: {
       handler(val) {
-        console.log(val);
         setTimeout(() => this.selfAware(), 1000);
       },
     },
     startI: {
       handler(val, oldVal) {
         var j = this.startJ;
-        console.log(val);
       },
     },
     startJ: {
       handler(val, oldVal) {
         var i = this.startI;
-        console.log(val);
       },
     },
   },
@@ -104,7 +100,6 @@ export default defineComponent({
       return false;
     },
     startSimulation() {
-      console.log(this.object.meltingPoint);
       this.count += 1;
     },
     stepRepeat(i, j, val) {},
@@ -114,23 +109,43 @@ export default defineComponent({
           if (j > this.startJ && i > this.startI) break;
           if (this.data[i][j] > 300) {
             var current = this.data[i][j];
+            // if(this.data[i][j] == 3159) console.log('here');
             if (i > 0) this.calcValue(i - 1, j, current);
-            if (j > 0) this.calcValue(i, j - 1, current);
+            //if (j > 0) this.calcValue(i, j - 1, current);
           }
         }
       }
-      if (i > 0 || j > 0) this.count += 1;
+      // if (i > 0 || j > 0) this.count += 1;
     },
     calcValue(i, j, val) {
+      if (this.data[i][j] == 3159) {
+        return;
+      }
       if (this.data[i][j] !== val) {
-        this.data[i][j] += 200;
+        this.data[i][j] = this.formula(i, j, val);
         if (this.data[i][j] > this.object.meltingPoint) {
           this.data[i][j] = 3159;
         }
-        if (this.data[i][j] > 700) {
-          console.log(`${i},${j}`);
-        }
       }
+      console.log("execute");
+    },
+    formula(i, j, val) {
+      var time = this.count / 100;
+      var times = time / 10;
+      var k = this.object.thermal * -1;
+      var q = k * (this.data[i][j] - val);
+      var f = this.object.density;
+      const cp = 0.9;
+
+      var calc = (time * q) / (cp * f * times) + this.data[i][j];
+      var result = calc.toFixed(2);
+      console.log(time);
+      console.log(q);
+      console.log(cp);
+      console.log(f);
+      console.log(times);
+      console.log(calc);
+      return result;
     },
   },
 });

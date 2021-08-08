@@ -81,7 +81,6 @@ export default defineComponent({
     },
     count: {
       handler(val) {
-        console.log(val);
         setTimeout(() => this.selfAware(), 1000);
       },
     },
@@ -113,13 +112,11 @@ export default defineComponent({
         for (var j = 0; j < this.data[i].length; j++) {
           if (j > this.startJ && i > this.startI) break;
           if (this.data[i][j] > 300) {
-            var current = this.data[i][j];
-            if (i > 0) this.calcValue(i - 1, j, current);
-            if (j > 0) this.calcValue(i, j - 1, current);
+            if (i > 0) this.calcValue(i - 1, j, this.data[i][j]);
+            if (j > 0) this.calcValue(i, j - 1, this.data[i][j]);
           }
         }
       }
-      if (i > 0 || j > 0) this.count += 1;
     },
     calcValue(i, j, val) {
       if (this.data[i][j] !== val) {
@@ -127,10 +124,8 @@ export default defineComponent({
         if (this.data[i][j] > this.object.meltingPoint) {
           this.data[i][j] = 3159;
         }
-        if (this.data[i][j] > 700) {
-          console.log(`${i},${j}`);
-        }
       }
+      if (i > 0 || j > 0) this.count += 1;
     },
   },
 });

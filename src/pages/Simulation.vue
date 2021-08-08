@@ -25,7 +25,7 @@
       <q-card-section class="row">
         <q-btn color="primary"  @click="selectedObject">Rocket Nozel</q-btn>
         <q-space />
-        <q-btn color="primary" to="/simulation/start" @click="selectedObject">Iron Cassing</q-btn>
+        <q-btn color="primary" to="/simulation/start" @click="selectedObject">Rocket Cassing</q-btn>
       </q-card-section>
     </q-card>
   </q-dialog>

@@ -23,7 +23,7 @@
      <q-dialog v-model="dialog" position="bottom">
     <q-card style="width: 350px">
       <q-card-section class="row">
-        <q-btn color="primary"  @click="selectedObject">Rocket Nozel</q-btn>
+        <q-btn color="primary" to="/simulation/start/nozel" @click="selectedObject">Rocket Nozel</q-btn>
         <q-space />
         <q-btn color="primary" to="/simulation/start" @click="selectedObject">Rocket Cassing</q-btn>
       </q-card-section>

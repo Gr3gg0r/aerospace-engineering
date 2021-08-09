@@ -8,6 +8,7 @@ const routes = [
       { path: '/start', component: () => import('pages/Start.vue') },
       { path: '/simulation', component: () => import('pages/Simulation.vue') },
       { path: '/simulation/start', component: () => import('pages/SimulationStart.vue') },
+      { path: '/simulation/start/nozel', component: () => import('pages/RocketNozel.vue') },
     ]
   },
 

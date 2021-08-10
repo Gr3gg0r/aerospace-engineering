@@ -141,7 +141,7 @@ export default defineComponent({
       var bottom = this.data[i + 1][j];
       if (bottom > 300) this.data[i][j] += 200;
       if (this.data[i][j] > this.object.meltingPoint) {
-        this.data[i][j] = 3159;
+        this.data[i][j] = bottom;
       }
     },
     formula(i, j, val) {

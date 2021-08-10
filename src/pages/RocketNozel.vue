@@ -141,54 +141,50 @@ export default defineComponent({
       var bottom = this.data[i + 1][j];
       var left = this.data[i][j - 1];
       var right = this.data[i][j + 1];
-      var q1=0;
-      var q2=0;
-      var q=0;
-      var t=0;
-      var temp =0;
-      var temp2
-      //rembo palatao
-      if (j=>0 && j<=12){
+      // var q1=0;
+      // var q2=0;
+      // var q=0;
+      // var t=0;
+      // var temp =0;
+      // var temp2
+      // //rembo palatao
+      // if (j=>0 && j<=12){
 
-        if (bottom > 300 && left > 300){
-          //console.log(i,j,"temp " ,this.data[i][j]);
-          //this.data[i][j] += 100;
-          //console.log();
-          temp = this.data[i][j];
-          q1 = -45*(temp - left);
-          q2 = -45*(temp - bottom);
-          q=q1+q2;
-         // console.log("q1 : " ,q1,"q2 : " ,q2,"q : " ,q);
-          temp2 = (0.01*q)/(0.9*7150 *0.001) +300;
-          this.data[i][j] =temp2;
-          //console.log("temp2 : ", temp2);
-        }
-        //TAMBAH FORMULA
-        //console.log(i,j , "below : ", i+1,j, this.data[i][j-1]);
-        if (this.data[i][j] > this.object.meltingPoint) {
-          this.data[i][j] = bottom;
-        }
-      }       
-      if (j>12 && j<=26){
+      //   if (bottom > 300 && left > 300){
+      //     //console.log(i,j,"temp " ,this.data[i][j]);
+      //     //this.data[i][j] += 100;
+      //     //console.log();
+      //     temp = this.data[i][j];
+      //     q1 = -45*(temp - left);
+      //     q2 = -45*(temp - bottom);
+      //     q=q1+q2;
+      //    // console.log("q1 : " ,q1,"q2 : " ,q2,"q : " ,q);
+      //     temp2 = (0.01*q)/(0.9*7150 *0.001) +300;
+      //     this.data[i][j] =temp2;
+      //     //console.log("temp2 : ", temp2);
+      //   }
+      //   //TAMBAH FORMULA
+      //   //console.log(i,j , "below : ", i+1,j, this.data[i][j-1]);
+      //   if (this.data[i][j] > this.object.meltingPoint) {
+      //     this.data[i][j] = bottom;
+      //   }
+      // }       
+      // if (j>12 && j<=26){
 
-        if (bottom > 300 && right > 300){
-          console.log(i,j,"temp " ,this.data[i][j]);
-          //this.data[i][j] += 100;
-          console.log();
-          q1 = -45*(this.data[i][j] - right);
-          q2 = -45*(this.data[i][j] - bottom);
-          q=q1+q2;
-          console.log("q1 : " ,q1,"q2 : " ,q2,"q : " ,q);
-          temp2 = (0.01*q)/(0.9*7150 *0.001) +300;
-          this.data[i][j] =temp2;
-          console.log("temp2 : ", temp2);
-        }
+      //   if (bottom > 300 && right > 300){
+      //     console.log(i,j,"temp " ,this.data[i][j]);
+      //     //this.data[i][j] += 100;
+      //     console.log();
+      //     q1 = -45*(this.data[i][j] - right);
+      //     q2 = -45*(this.data[i][j] - bottom);
+      //     q=q1+q2;
+      //     console.log("q1 : " ,q1,"q2 : " ,q2,"q : " ,q);
+      //     temp2 = (0.01*q)/(0.9*7150 *0.001) +300;
+      //     this.data[i][j] =temp2;
+      //     console.log("temp2 : ", temp2);
+      //   }
         //TAMBAH FORMULA
-        //console.log(i,j , "below : ", i+1,j, this.data[i][j-1]);
-        if (this.data[i][j] > this.object.meltingPoint) {
-          this.data[i][j] = bottom;
-        }
-      if (bottom > 300) {
+      if (bottom > 300  && right > 300) {
         //change bellow this
         this.data[i][j] += 200;
         //change up this line
@@ -198,45 +194,22 @@ export default defineComponent({
       }
       }
     },
-    formula(i, j, val) {
+    formula(i, j, val /**Ubah dalam Ni */) {
       var time = this.count / 100;
       var times = time / 10;
       var k = this.object.thermal * -1;
       var f = this.object.density;
       const cp = 0.9;
       var temperature = parseInt(this.data[i][j]);
-
-      if (i > 0 && j > 0) {
-        var temperatureL = parseInt(this.data[i][j - 1]);
-        var temperatureU = parseInt(this.data[i - 1][j]);
-      }
-
-      var q = 0;
-      var q1 = 0;
-      var q2 = 0;
-      if (temperature > 300 && i > 0 && j > 0) {
-        q1 = k * (this.data[i][j] - val);
-        if (temperature !== this.data[i - 1][j] && i > 0 && j > 0) {
-          q2 = k * (temperatureU - temperature);
-        } else {
-          console.log("left");
-          q2 = k * (temperatureL - temperature);
-        }
-        q = q1 - q2;
-        q = q.toFixed(2);
-      } else {
-        q = k * (temperature - val);
-        q = q.toFixed(2);
-      }
-
+      // Change beyond this line
+      
+      // Beyond this line no change
       var calc = (time * q) / (cp * f * times) + temperature;
       try {
         var result = calc.toFixed(2);
       } catch (e) {
-        // console.log(time, q, cp, f, times, this.data[i][j]);
         // console.log(calc);
       }
-      // console.log(result);
 
       return result;
     },

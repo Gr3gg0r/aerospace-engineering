@@ -12,11 +12,11 @@
             <div v-for="(column, j) in data[i]" :key="j">
               <div v-if="check(i, j, column)" class="bg-red q-pa-xs box">
                 <div>{{ column }}</div>
-                <!-- <div>{{ i }},{{ j }}</div> -->
+                <div>{{ i }},{{ j }}</div>
               </div>
               <div v-else class="bg-primary q-pa-xs box">
                 <div>{{ column }}</div>
-                <!-- <div>{{ i }},{{ j }}</div> -->
+                <div>{{ i }},{{ j }}</div>
               </div>
             </div>
           </div>
@@ -97,7 +97,7 @@ export default defineComponent({
   watch: {
     data: {
       handler(val, oldVal) {
-        console.log(val[0][0]);
+     //   console.log(val[0][0]);
         if (val[1][12] > 2500) {
           this.controller = false;
         }
@@ -139,9 +139,55 @@ export default defineComponent({
     },
     calcValue(i, j, val) {
       var bottom = this.data[i + 1][j];
-      if (bottom > 300) this.data[i][j] += 200;
-      if (this.data[i][j] > this.object.meltingPoint) {
-        this.data[i][j] = bottom;
+      var left = this.data[i][j - 1];
+      var right = this.data[i][j + 1];
+      var q1=0;
+      var q2=0;
+      var q=0;
+      var t=0;
+      var temp =0;
+      var temp2
+      //rembo palatao
+      if (j=>0 && j<=12){
+
+        if (bottom > 300 && left > 300){
+          //console.log(i,j,"temp " ,this.data[i][j]);
+          //this.data[i][j] += 100;
+          //console.log();
+          temp = this.data[i][j];
+          q1 = -45*(temp - left);
+          q2 = -45*(temp - bottom);
+          q=q1+q2;
+         // console.log("q1 : " ,q1,"q2 : " ,q2,"q : " ,q);
+          temp2 = (0.01*q)/(0.9*7150 *0.001) +300;
+          this.data[i][j] =temp2;
+          //console.log("temp2 : ", temp2);
+        }
+        //TAMBAH FORMULA
+        //console.log(i,j , "below : ", i+1,j, this.data[i][j-1]);
+        if (this.data[i][j] > this.object.meltingPoint) {
+          this.data[i][j] = bottom;
+        }
+      }       
+      if (j>12 && j<=26){
+
+        if (bottom > 300 && right > 300){
+          console.log(i,j,"temp " ,this.data[i][j]);
+          //this.data[i][j] += 100;
+          console.log();
+          q1 = -45*(this.data[i][j] - right);
+          q2 = -45*(this.data[i][j] - bottom);
+          q=q1+q2;
+          console.log("q1 : " ,q1,"q2 : " ,q2,"q : " ,q);
+          temp2 = (0.01*q)/(0.9*7150 *0.001) +300;
+          this.data[i][j] =temp2;
+          console.log("temp2 : ", temp2);
+        }
+        //TAMBAH FORMULA
+        //console.log(i,j , "below : ", i+1,j, this.data[i][j-1]);
+        if (this.data[i][j] > this.object.meltingPoint) {
+          this.data[i][j] = bottom;
+        }
       }
     },
     formula(i, j, val) {

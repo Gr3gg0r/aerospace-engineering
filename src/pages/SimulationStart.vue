@@ -11,12 +11,12 @@
           <div class="row">
             <div v-for="(column, j) in data[i]" :key="j">
               <div v-if="check(i, j, column)" class="bg-red q-pa-xs box">
-                <!-- <div>{{ column }}</div> -->
-                <div>{{ i }},{{ j }}</div>
+                <div>{{ column }}</div>
+                <!-- <div>{{ i }},{{ j }}</div> -->
               </div>
               <div v-else class="bg-primary q-pa-xs box">
-                <!-- <div>{{ column }}</div> -->
-                <div>{{ i }},{{ j }}</div>
+                <div>{{ column }}</div>
+                <!-- <div>{{ i }},{{ j }}</div> -->
               </div>
             </div>
           </div>
@@ -25,6 +25,10 @@
     </q-card>
     <q-card class="q-ma-md">
       <q-card-section>
+        <q-btn color="red" class="q-ma-sm" @click="controlClick">
+          <div v-if="clickController">Simulation</div>
+          <div v-else>One Click</div>
+        </q-btn>
         <q-btn color="primary" class="q-ma-sm" @click="startSimulation">
           Start
         </q-btn>
@@ -73,6 +77,7 @@ export default defineComponent({
       startJ: 20,
       startI: 14,
       controller: true,
+      clickController : true
     };
   },
   watch: {
@@ -101,6 +106,9 @@ export default defineComponent({
     },
   },
   methods: {
+    controlClick() {
+      this.clickController = !this.clickController;
+    },
     check(i, j, val) {
       if (val >= 3159) return true;
       return false;
@@ -122,45 +130,48 @@ export default defineComponent({
             if (j > 0 && j <= this.startJ && i >= this.startI)
               this.calcValue(i, j - 1, current, false);
           }
-          if (i <= 13 && j <= 19) this.specialCalc(i, j, current); // TODO : this one
+          if (i < this.startI && j < this.startJ) this.specialCalc(i, j, current); // TODO : this one
         }
       }
       if (this.controller) {
-        // this.count += 1;
+       if(this.clickController) this.count += 1;
       } else {
         this.popup = true;
       }
     },
     // TODO : Aqil anwar
     specialCalc(i, j, val) {
-      var bottom = this.data[i + 1][j];
-      var right = this.data[i][j + 1];
+      var bottom = parseInt(this.data[i + 1][j]);
+      var right = parseInt(this.data[i][j + 1]);
+      var val = parseInt(this.data[i][j]);
       console.log("here");
       console.log(`(${i},${j})`);
-      if (bottom > 300) {
-        this.data[i][j] += 100;
+      if (bottom > 300 && right > 300 && val < 3159) {
+        this.data[i][j] = this.formulaNext(i, j, val, bottom, right);
+        // this.data[i][j] += 100;
         if (this.data[i][j] > this.object.meltingPoint) {
           this.data[i][j] = 3159;
+          this.startI -=1;
+          this.startJ -=1;
         }
       }
     },
     // TODO: Aqil.
-    formulaNext(i, j, val) {
+    formulaNext(i, j, val, valB, valR) {
       var time = this.count / 100;
       var times = time / 10;
       var k = this.object.thermal * -1;
       var f = this.object.density;
       const cp = 0.9;
-      var temperature = parseInt(this.data[i][j]);
-      var temperatureB = parseInt(this.data[i + 1][j]);
-      var temperatureR = parseInt(this.data[i][j + 1]);
+
       var q = 0;
-      var q1 = 0;
-      var q2 = 0;
+      var q1 = k * (val - valB);
+      var q2 = k * (val - valR);
+      q = q1 + q2;
       // Only modify below this line
 
       // Only modify above this line
-      var calc = (time * q) / (cp * f * times) + temperature;
+      var calc = (time * q) / (cp * f * times) + val;
       var result = calc.toFixed(2);
       return result;
     },

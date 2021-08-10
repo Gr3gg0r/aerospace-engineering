@@ -188,6 +188,14 @@ export default defineComponent({
         if (this.data[i][j] > this.object.meltingPoint) {
           this.data[i][j] = bottom;
         }
+      if (bottom > 300) {
+        //change bellow this
+        this.data[i][j] += 200;
+        //change up this line
+      }
+      if (this.data[i][j] > this.object.meltingPoint) {
+        this.data[i][j] = bottom;
+      }
       }
     },
     formula(i, j, val) {

@@ -11,8 +11,8 @@
           <div class="row">
             <div v-for="(column, j) in data[i]" :key="j">
               <div v-if="check(i, j, column)" class="bg-red q-pa-xs box">
-                <div>{{ column }}</div>
-                <!-- <div>{{ i }},{{ j }}</div> -->
+                <!-- <div>{{ column }}</div> -->
+                <div>{{ i }},{{ j }}</div>
               </div>
               <div v-else class="bg-primary q-pa-xs box">
                 <div>{{ column }}</div>
@@ -116,35 +116,43 @@ export default defineComponent({
           var current = this.data[i][j];
 
           if (this.data[i][j] > 300) {
-            if(this.data[i][j] == 3159) console.log('here');
+            // if(this.data[i][j] == 3159) console.log('here');
             if (i > 0 && i <= this.startI && j >= this.startJ)
               this.calcValue(i - 1, j, current, true);
             if (j > 0 && j <= this.startJ && i >= this.startI)
               this.calcValue(i, j - 1, current, false);
           }
-          if (i <= 13 && j <= 19) this.specialCalc(i, j, current); // TODO : this one
+          if (i <= 13 && j <= 19) this.specialCalc(i, j, current);
         }
       }
       if (this.controller) {
-        // this.count += 1;
+        this.count += 1;
       } else {
         this.popup = true;
       }
     },
-    // TODO : Aqil anwar
     specialCalc(i, j, val) {
       var bottom = this.data[i + 1][j];
       var right = this.data[i][j + 1];
       console.log("here");
       console.log(`(${i},${j})`);
       if (bottom > 300) {
-        this.data[i][j] += 100;
+        this.data[i][j] = this.formulaNext(i, j, val);
         if (this.data[i][j] > this.object.meltingPoint) {
           this.data[i][j] = 3159;
         }
       }
     },
-    // TODO: Aqil.
+    calcValue(i, j, val, bool) {
+      if (this.data[i][j] == 3159) {
+        return;
+      }
+      this.data[i][j] = this.formula(i, j, val, bool);
+      this.data[i][j] += 100;
+      if (this.data[i][j] > this.object.meltingPoint) {
+        this.data[i][j] = 3159;
+      }
+    },
     formulaNext(i, j, val) {
       var time = this.count / 100;
       var times = time / 10;
@@ -157,16 +165,7 @@ export default defineComponent({
       var q = 0;
       var q1 = 0;
       var q2 = 0;
-    },
-    calcValue(i, j, val, bool) {
-      if (this.data[i][j] == 3159) {
-        return;
-      }
-      this.data[i][j] = this.formula(i, j, val, bool);
-      // this.data[i][j] += 100;
-      if (this.data[i][j] > this.object.meltingPoint) {
-        this.data[i][j] = 3159;
-      }
+      
     },
     formula(i, j, val, bool, bottom) {
       var time = this.count / 100;

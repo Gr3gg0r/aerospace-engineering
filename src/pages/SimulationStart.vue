@@ -164,6 +164,7 @@ export default defineComponent({
       var f = this.object.density;
       const cp = 0.9;
 
+      //Q YANG BERUBAH
       var q = 0;
       var q1 = k * (val - valB);
       var q2 = k * (val - valR);

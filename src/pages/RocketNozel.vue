@@ -137,74 +137,59 @@ export default defineComponent({
         this.popup = true;
       }
     },
+
     calcValue(i, j, val) {
       var bottom = this.data[i + 1][j];
       var left = this.data[i][j - 1];
       var right = this.data[i][j + 1];
-      // var q1=0;
-      // var q2=0;
-      // var q=0;
-      // var t=0;
-      // var temp =0;
-      // var temp2
-      // //rembo palatao
-      // if (j=>0 && j<=12){
 
-      //   if (bottom > 300 && left > 300){
-      //     //console.log(i,j,"temp " ,this.data[i][j]);
-      //     //this.data[i][j] += 100;
-      //     //console.log();
-      //     temp = this.data[i][j];
-      //     q1 = -45*(temp - left);
-      //     q2 = -45*(temp - bottom);
-      //     q=q1+q2;
-      //    // console.log("q1 : " ,q1,"q2 : " ,q2,"q : " ,q);
-      //     temp2 = (0.01*q)/(0.9*7150 *0.001) +300;
-      //     this.data[i][j] =temp2;
-      //     //console.log("temp2 : ", temp2);
-      //   }
-      //   //TAMBAH FORMULA
-      //   //console.log(i,j , "below : ", i+1,j, this.data[i][j-1]);
-      //   if (this.data[i][j] > this.object.meltingPoint) {
-      //     this.data[i][j] = bottom;
-      //   }
-      // }       
-      // if (j>12 && j<=26){
-
-      //   if (bottom > 300 && right > 300){
-      //     console.log(i,j,"temp " ,this.data[i][j]);
-      //     //this.data[i][j] += 100;
-      //     console.log();
-      //     q1 = -45*(this.data[i][j] - right);
-      //     q2 = -45*(this.data[i][j] - bottom);
-      //     q=q1+q2;
-      //     console.log("q1 : " ,q1,"q2 : " ,q2,"q : " ,q);
-      //     temp2 = (0.01*q)/(0.9*7150 *0.001) +300;
-      //     this.data[i][j] =temp2;
-      //     console.log("temp2 : ", temp2);
-      //   }
-        //TAMBAH FORMULA
-      if (bottom > 300  && right > 300) {
-        //change bellow this
-        this.data[i][j] += 200;
-        //change up this line
+      if (j=>0 && j<=12){
+        if (bottom > 300  && left > 300) {
+          //change bellow this
+          this.data[i][j] = this.formula(i,j,bottom,left);
+          //change up this line
+        }
       }
+      if (j>12 && j<=26){
+        if (bottom > 300  && right > 300) {
+          //change bellow this
+          this.data[i][j] = this.formula(i,j,bottom,right);
+          
+          //change up this line
+        }
+      }
+
       if (this.data[i][j] > this.object.meltingPoint) {
         this.data[i][j] = bottom;
       }
-      }
     },
-    formula(i, j, val /**Ubah dalam Ni */) {
-      var time = this.count / 100;
+    
+    formula(i, j, bottom,right) {
+      var q=0;
+      var q1=0;
+      var q2=0;
+      temperature = this.data[i][j];
+
+      q1 = -45 * (temperature - bottom) ;
+      q2 = -45 * (temperature - right) ; 
+      q = q1+q2;
+
+      console.log(q1);
+  
+      var time = 0.01;
       var times = time / 10;
-      var k = this.object.thermal * -1;
+      var k = 45;
       var f = this.object.density;
       const cp = 0.9;
       var temperature = parseInt(this.data[i][j]);
+      console.log(i,j, "Temp",temperature);
+
       // Change beyond this line
       
+
       // Beyond this line no change
       var calc = (time * q) / (cp * f * times) + temperature;
+      console.log(calc);
       try {
         var result = calc.toFixed(2);
       } catch (e) {

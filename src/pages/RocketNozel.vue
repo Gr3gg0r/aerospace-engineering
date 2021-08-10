@@ -25,6 +25,10 @@
     </q-card>
     <q-card class="q-ma-md">
       <q-card-section>
+        <q-btn color="red" class="q-ma-sm" @click="controlClick">
+          <div v-if="clickController">Simulation</div>
+          <div v-else>One Click</div>
+        </q-btn>
         <q-btn color="primary" class="q-ma-sm" @click="startSimulation">
           Start
         </q-btn>
@@ -80,6 +84,7 @@ export default defineComponent({
       startJ: 20,
       startI: 16,
       controller: true,
+      clickController: true,
     };
   },
   watch: {
@@ -109,6 +114,9 @@ export default defineComponent({
     },
   },
   methods: {
+    controlClick() {
+      this.clickController = !this.clickController;
+    },
     check(i, j, val) {
       if (val >= 3159) return true;
       return false;
@@ -120,7 +128,7 @@ export default defineComponent({
     selfAware() {
       for (var i = 0; i < this.data.length; i++) {
         for (var j = 0; j < this.data[i].length; j++) {
-          if (i = 7 && i >= 0) {
+          if ((i = 7 && i >= 0)) {
             if (this.data[i][j] > 300) {
               if (i > 0) this.calcValue(i - 1, j, current);
               if (j > 0) this.calcValue(i, j - 1, current);
@@ -130,7 +138,7 @@ export default defineComponent({
         }
       }
       if (this.controller) {
-        //this.count += 1;
+        if (this.clickController) this.count += 1;
       } else {
         this.popup = true;
       }

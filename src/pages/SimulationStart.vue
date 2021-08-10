@@ -11,12 +11,12 @@
           <div class="row">
             <div v-for="(column, j) in data[i]" :key="j">
               <div v-if="check(i, j, column)" class="bg-red q-pa-xs box">
-                <div>{{ column }}</div>
-                <!-- <div>{{ i }},{{ j }}</div> -->
+                <!-- <div>{{ column }}</div> -->
+                <div>{{ i }},{{ j }}</div>
               </div>
               <div v-else class="bg-primary q-pa-xs box">
-                <div>{{ column }}</div>
-                <!-- <div>{{i}},{{j}}</div> -->
+                <!-- <div>{{ column }}</div> -->
+                <div>{{ i }},{{ j }}</div>
               </div>
             </div>
           </div>
@@ -116,7 +116,7 @@ export default defineComponent({
           var current = this.data[i][j];
 
           if (this.data[i][j] > 300) {
-            if(this.data[i][j] == 3159) console.log('here');
+            if (this.data[i][j] == 3159) console.log("here");
             if (i > 0 && i <= this.startI && j >= this.startJ)
               this.calcValue(i - 1, j, current, true);
             if (j > 0 && j <= this.startJ && i >= this.startI)
@@ -152,11 +152,17 @@ export default defineComponent({
       var f = this.object.density;
       const cp = 0.9;
       var temperature = parseInt(this.data[i][j]);
-      var temperatureB = parseInt(this.data[i+1][j]);
-      var temperatureR = parseInt(this.data[i][j+1]);
+      var temperatureB = parseInt(this.data[i + 1][j]);
+      var temperatureR = parseInt(this.data[i][j + 1]);
       var q = 0;
       var q1 = 0;
       var q2 = 0;
+      // Only modify below this line
+
+      // Only modify above this line
+      var calc = (time * q) / (cp * f * times) + temperature;
+      var result = calc.toFixed(2);
+      return result;
     },
     calcValue(i, j, val, bool) {
       if (this.data[i][j] == 3159) {

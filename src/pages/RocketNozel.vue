@@ -139,7 +139,11 @@ export default defineComponent({
     },
     calcValue(i, j, val) {
       var bottom = this.data[i + 1][j];
-      if (bottom > 300) this.data[i][j] += 200;
+      if (bottom > 300) {
+        //change bellow this
+        this.data[i][j] += 200;
+        //change up this line
+      }
       if (this.data[i][j] > this.object.meltingPoint) {
         this.data[i][j] = bottom;
       }

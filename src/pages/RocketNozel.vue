@@ -12,11 +12,11 @@
             <div v-for="(column, j) in data[i]" :key="j">
               <div v-if="check(i, j, column)" class="bg-red q-pa-xs box">
                 <div>{{ column }}</div>
-                <div>{{ i }},{{ j }}</div>
+                <!-- <div>{{ i }},{{ j }}</div> -->
               </div>
               <div v-else class="bg-primary q-pa-xs box">
                 <div>{{ column }}</div>
-                <div>{{ i }},{{ j }}</div>
+                <!-- <div>{{ i }},{{ j }}</div> -->
               </div>
             </div>
           </div>

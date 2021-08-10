@@ -64,26 +64,27 @@ export default defineComponent({
     this.data.forEach((column, i) =>
       column.forEach((row, j) => {
         if (j > 0) this.data[i][j] = 3159 - 24 * j;
-        if (j == 26) this.data[i][j] = 2567;
-        if (i == 11 + 1 && j >= 10 + 1 && j <= 13) this.data[i][j] = 300;
-        if (i == 10 + 1 && j >= 9 + 1 && j <= 14) this.data[i][j] = 300;
-        if (i == 9 + 1 && j >= 8 + 1 && j <= 15) this.data[i][j] = 300;
-        if (i == 8 + 1 && j >= 7 + 1 && j <= 16) this.data[i][j] = 300;
-        if (i == 7 + 1 && j >= 6 + 1 && j <= 17) this.data[i][j] = 300;
-        if (i == 6 + 1 && j >= 5 + 1 && j <= 18) this.data[i][j] = 300;
-        if (i == 5 + 1 && j >= 4 + 1 && j <= 19) this.data[i][j] = 300;
-        if (i == 4 + 1 && j >= 3 + 1 && j <= 20) this.data[i][j] = 300;
-        if (i == 3 + 1 && j >= 2 + 1 && j <= 21) this.data[i][j] = 300;
-        if (i == 2 + 1 && j >= 1 + 1 && j <= 22) this.data[i][j] = 300;
-        if (i == 1 + 1 && j >= 0 + 1 && j <= 23) this.data[i][j] = 300;
-        if (i == 0 + 1 && j >= 0 + 1 && j <= 24) this.data[i][j] = 300;
-        if (i == 0 && j >= 0 + 1 && j <= 25) this.data[i][j] = 300;
+        if (j == 27) this.data[i][j] = 2567;
+        if (i == 11 + 2 && j >= 10 + 1 && j <= 13) this.data[i][j] = 300;
+        if (i == 10 + 2 && j >= 9 + 1 && j <= 14) this.data[i][j] = 300;
+        if (i == 9 + 2 && j >= 8 + 1 && j <= 15) this.data[i][j] = 300;
+        if (i == 8 + 2 && j >= 7 + 1 && j <= 16) this.data[i][j] = 300;
+        if (i == 7 + 2 && j >= 6 + 1 && j <= 17) this.data[i][j] = 300;
+        if (i == 6 + 2 && j >= 5 + 1 && j <= 18) this.data[i][j] = 300;
+        if (i == 5 + 2 && j >= 4 + 1 && j <= 19) this.data[i][j] = 300;
+        if (i == 4 + 2 && j >= 3 + 1 && j <= 20) this.data[i][j] = 300;
+        if (i == 3 + 2 && j >= 2 + 1 && j <= 21) this.data[i][j] = 300;
+        if (i == 2 + 2 && j >= 1 + 1 && j <= 22) this.data[i][j] = 300;
+        if (i == 1 + 2 && j >= 0 + 1 && j <= 23) this.data[i][j] = 300;
+        if (i == 0 + 2 && j >= 0 + 1 && j <= 24) this.data[i][j] = 300;
+        if (i == 0 + 1 && j >= 0 + 1 && j <= 25) this.data[i][j] = 300;
+        if (i == 0 && j >= 0 + 1 && j <= 26) this.data[i][j] = 300;
       })
     );
   },
   data() {
     return {
-      data: new Array(19).fill(0).map(() => new Array(27).fill(3159)),
+      data: new Array(19).fill(0).map(() => new Array(28  ).fill(3159)),
       popup: false,
       object: null,
       title: "",
@@ -196,7 +197,7 @@ export default defineComponent({
 
 <style scoped>
 .box {
-  width: 45px;
+  width: 43px;
 }
 .text-small {
   font-size: 10px;

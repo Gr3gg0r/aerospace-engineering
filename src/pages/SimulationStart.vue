@@ -63,7 +63,7 @@ export default defineComponent({
     this.title = this.object.material;
     this.data.forEach((column, i) =>
       column.forEach((row, j) => {
-        if (i >= 14 && j >= 20) this.data[i][j] = 3159;
+        if (i >= this.startI && j >= this.startJ) this.data[i][j] = 3159;
       })
     );
   },
@@ -74,10 +74,10 @@ export default defineComponent({
       object: null,
       title: "",
       count: 0,
-      startJ: 20,
+      startJ: 14,
       startI: 14,
       controller: true,
-      clickController : true
+      clickController: true,
     };
   },
   watch: {
@@ -91,7 +91,9 @@ export default defineComponent({
     },
     count: {
       handler(val) {
-        setTimeout(() => this.selfAware(), 500);
+        if (this.data[0][0] == 3159) this.selfAware();
+        if (val == 1) this.selfAware();
+        else setTimeout(() => this.selfAware(), 1000);
       },
     },
     startI: {
@@ -124,17 +126,17 @@ export default defineComponent({
           var current = this.data[i][j];
 
           if (this.data[i][j] > 300) {
-            if (this.data[i][j] == 3159) console.log("here");
             if (i > 0 && i <= this.startI && j >= this.startJ)
               this.calcValue(i - 1, j, current, true);
             if (j > 0 && j <= this.startJ && i >= this.startI)
               this.calcValue(i, j - 1, current, false);
           }
-          if (i < this.startI && j < this.startJ) this.specialCalc(i, j, current); // TODO : this one
+          if (i < this.startI && j < this.startJ)
+            this.specialCalc(i, j, current); // TODO : this one
         }
       }
       if (this.controller) {
-       if(this.clickController) this.count += 1;
+        if (this.clickController) this.count += 1;
       } else {
         this.popup = true;
       }
@@ -144,15 +146,13 @@ export default defineComponent({
       var bottom = parseInt(this.data[i + 1][j]);
       var right = parseInt(this.data[i][j + 1]);
       var val = parseInt(this.data[i][j]);
-      console.log("here");
-      console.log(`(${i},${j})`);
       if (bottom > 300 && right > 300 && val < 3159) {
         this.data[i][j] = this.formulaNext(i, j, val, bottom, right);
         // this.data[i][j] += 100;
         if (this.data[i][j] > this.object.meltingPoint) {
           this.data[i][j] = 3159;
-          this.startI -=1;
-          this.startJ -=1;
+          if (this.startI > 0) this.startI -= 1;
+          if (this.startJ > 0) this.startJ -= 1;
         }
       }
     },
@@ -219,10 +219,8 @@ export default defineComponent({
       try {
         var result = calc.toFixed(2);
       } catch (e) {
-        // console.log(time, q, cp, f, times, this.data[i][j]);
-        // console.log(calc);
+        console.log(calc);
       }
-      // console.log(result);
 
       return result;
     },

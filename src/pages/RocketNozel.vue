@@ -11,12 +11,12 @@
           <div class="row">
             <div v-for="(column, j) in data[i]" :key="j">
               <div v-if="check(i, j, column)" class="bg-red q-pa-xs box">
-                <!-- <div>{{ column }}</div> -->
-                <div>{{ i }},{{ j }}</div>
+                <div>{{ column }}</div>
+                <!-- <div>{{ i }},{{ j }}</div> -->
               </div>
               <div v-else class="bg-primary q-pa-xs box">
-                <!-- <div>{{ column }}</div> -->
-                <div>{{ i }},{{ j }}</div>
+                <div>{{ column }}</div>
+                <!-- <div>{{ i }},{{ j }}</div> -->
               </div>
             </div>
           </div>
@@ -63,20 +63,27 @@ export default defineComponent({
     this.title = this.object.material;
     this.data.forEach((column, i) =>
       column.forEach((row, j) => {
-        if (i == 7 && j >= 20 && j <= 30) this.data[i][j] = 300;
-        if (i == 6 && j >= 17 && j <= 32) this.data[i][j] = 300;
-        if (i == 5 && j >= 14 && j <= 34) this.data[i][j] = 300;
-        if (i == 4 && j >= 10 && j <= 36) this.data[i][j] = 300;
-        if (i == 3 && j >= 8 && j <= 38) this.data[i][j] = 300;
-        if (i == 2 && j >= 5 && j <= 40) this.data[i][j] = 300;
-        if (i == 1 && j >= 3 && j <= 42) this.data[i][j] = 300;
-        if (i == 0 && j >= 1 && j <= 44) this.data[i][j] = 300;
+        if (j > 0) this.data[i][j] = 3159 - 24 * j;
+        if (j == 26) this.data[i][j] = 2567;
+        if (i == 11 + 1 && j >= 10 + 1 && j <= 13) this.data[i][j] = 300;
+        if (i == 10 + 1 && j >= 9 + 1 && j <= 14) this.data[i][j] = 300;
+        if (i == 9 + 1 && j >= 8 + 1 && j <= 15) this.data[i][j] = 300;
+        if (i == 8 + 1 && j >= 7 + 1 && j <= 16) this.data[i][j] = 300;
+        if (i == 7 + 1 && j >= 6 + 1 && j <= 17) this.data[i][j] = 300;
+        if (i == 6 + 1 && j >= 5 + 1 && j <= 18) this.data[i][j] = 300;
+        if (i == 5 + 1 && j >= 4 + 1 && j <= 19) this.data[i][j] = 300;
+        if (i == 4 + 1 && j >= 3 + 1 && j <= 20) this.data[i][j] = 300;
+        if (i == 3 + 1 && j >= 2 + 1 && j <= 21) this.data[i][j] = 300;
+        if (i == 2 + 1 && j >= 1 + 1 && j <= 22) this.data[i][j] = 300;
+        if (i == 1 + 1 && j >= 0 + 1 && j <= 23) this.data[i][j] = 300;
+        if (i == 0 + 1 && j >= 0 + 1 && j <= 24) this.data[i][j] = 300;
+        if (i == 0 && j >= 0 + 1 && j <= 25) this.data[i][j] = 300;
       })
     );
   },
   data() {
     return {
-      data: new Array(30).fill(0).map(() => new Array(50).fill(3159)),
+      data: new Array(19).fill(0).map(() => new Array(27).fill(3159)),
       popup: false,
       object: null,
       title: "",
@@ -91,7 +98,7 @@ export default defineComponent({
     data: {
       handler(val, oldVal) {
         console.log(val[0][0]);
-        if (val[0][0] == 3159) {
+        if (val[1][12] > 2500) {
           this.controller = false;
         }
       },
@@ -102,23 +109,13 @@ export default defineComponent({
         setTimeout(() => this.selfAware(), 500);
       },
     },
-    startI: {
-      handler(val, oldVal) {
-        var j = this.startJ;
-      },
-    },
-    startJ: {
-      handler(val, oldVal) {
-        var i = this.startI;
-      },
-    },
   },
   methods: {
     controlClick() {
       this.clickController = !this.clickController;
     },
     check(i, j, val) {
-      if (val >= 3159) return true;
+      if (val >= 2500) return true;
       return false;
     },
     startSimulation() {
@@ -128,12 +125,9 @@ export default defineComponent({
     selfAware() {
       for (var i = 0; i < this.data.length; i++) {
         for (var j = 0; j < this.data[i].length; j++) {
-          if ((i = 7 && i >= 0)) {
-            if (this.data[i][j] > 300) {
-              if (i > 0) this.calcValue(i - 1, j, current);
-              if (j > 0) this.calcValue(i, j - 1, current);
-              if (j > 0) this.calcValue(i, j + 1, current);
-            }
+          var current = parseInt(this.data[i][j]);
+          if (i != 0 && current < this.object.meltingPoint) {
+            this.calcValue(i, j, current);
           }
         }
       }
@@ -144,15 +138,10 @@ export default defineComponent({
       }
     },
     calcValue(i, j, val) {
-      if (this.data[i][j] == 3159) {
-        return;
-      }
-      if (this.data[i][j] !== val) {
-        this.data[i][j] = 2000;
-        //this.data[i][j] = this.formula(i, j, val);
-        if (this.data[i][j] > this.object.meltingPoint) {
-          this.data[i][j] = 3159;
-        }
+      var bottom = this.data[i + 1][j];
+      if (bottom > 300) this.data[i][j] += 200;
+      if (this.data[i][j] > this.object.meltingPoint) {
+        this.data[i][j] = 3159;
       }
     },
     formula(i, j, val) {
@@ -203,9 +192,10 @@ export default defineComponent({
 
 <style scoped>
 .box {
-  width: 26px;
+  width: 45px;
 }
 .text-small {
-  font-size: 7px;
+  font-size: 10px;
+  text-align: center;
 }
 </style>
